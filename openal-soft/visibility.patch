@@ -7,5 +7,5 @@
 +#define AL_API  __attribute__((visibility("hidden")))
 +#define ALC_API __attribute__((visibility("hidden")))
  
- /* Define any available alignment declaration */
- #define ALIGN(x) ${ALIGN_DECL}
+ /* Define if HRTF data is embedded in the library */
+ #cmakedefine ALSOFT_EMBED_HRTF_DATA
