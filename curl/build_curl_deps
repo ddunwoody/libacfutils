@@ -89,8 +89,7 @@ case `uname` in
 		build_dep "mac-64" "$CONFOPTS_COMMON \
 		    -DOPENSSL_ROOT_DIR=$(pwd)/../ssl/openssl-mac-64 \
 		    -DZLIB_INCLUDE_DIR=$(pwd)/../zlib/zlib-mac-64/include \
-		    -DZLIB_LIBRARY=$(pwd)/../zlib/zlib-mac-64/lib/libz.a \
-		    -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64'" \
+		    -DZLIB_LIBRARY=$(pwd)/../zlib/zlib-mac-64/lib/libz.a" \
 		    "$CURL" "libcurl" "lib/libcurl.a"
 		;;
 	*)
