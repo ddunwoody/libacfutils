@@ -8,6 +8,7 @@
  */
 
 #![allow(non_snake_case)]
+#![allow(clippy::derive_ord_xor_partial_ord)]
 
 pub mod units {
     use crate::phys::conv::*;
@@ -47,6 +48,17 @@ pub mod units {
                     }
                 }
             }
+            impl std::cmp::Ord for $type {
+                fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+                    self.partial_cmp(other).unwrap_or_else(|| {
+                        panic!(
+                            "Unorderable physical unit value {:?}",
+                            self.$field,
+                        )
+                    })
+                }
+            }
+            impl std::cmp::Eq for $type {}
         };
     }
     macro_rules! impl_units_ops_check {
@@ -87,6 +99,17 @@ pub mod units {
                     }
                 }
             }
+            impl std::cmp::Ord for $type {
+                fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+                    self.partial_cmp(other).unwrap_or_else(|| {
+                        panic!(
+                            "Unorderable physical unit value {:?}",
+                            self.$field,
+                        )
+                    })
+                }
+            }
+            impl std::cmp::Eq for $type {}
         };
     }
     macro_rules! impl_units_ops_non_neg {
