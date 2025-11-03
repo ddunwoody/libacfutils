@@ -9,6 +9,7 @@
 
 use std::time::Duration;
 
+#[derive(Copy, Clone, Debug)]
 pub struct PidCtl {
     e_prev: Option<f64>,
     v_prev: Option<f64>,

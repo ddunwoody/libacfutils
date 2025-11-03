@@ -10,14 +10,14 @@
 pub mod units {
     use crate::geom::conv::*;
 
-    #[derive(Clone, Debug)]
+    #[derive(Copy, Clone, Debug)]
     #[allow(non_camel_case_types)]
     pub enum Normalize {
         NormNone,
         Norm_0_2,
         Norm_m1_1,
     }
-    #[derive(Clone, Debug)]
+    #[derive(Copy, Clone, Debug, Default)]
     pub struct Angle {
         a: f64, /* radians */
     }
