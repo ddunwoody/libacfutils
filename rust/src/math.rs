@@ -104,14 +104,14 @@ mod tests {
     }
 }
 
-pub fn fx_lin<Tx, Ty>(x: Tx, x1: Tx, y1: Ty, x2: Tx, y2: Ty) -> Ty
+pub fn fx_lin<Tx, Ty, Tr>(x: Tx, x1: Tx, y1: Ty, x2: Tx, y2: Ty) -> Ty
 where
-    Tx: Copy
-        + PartialEq
-        + Sub<Output = Tx>
-        + Mul<Ty, Output = Ty>
-        + Div<Output = Tx>,
+    // type of X axis input
+    Tx: Copy + PartialEq + Sub<Output = Tx> + Div<Output = Tr>,
+    // type of Y axis output
     Ty: Copy + Add<Output = Ty> + Sub<Output = Ty>,
+    // ratio of X values, used to multiply Y values to scale them correctly
+    Tr: Mul<Ty, Output = Ty>,
 {
     assert!(x1 != x2);
     ((x - x1) / (x2 - x1)) * (y2 - y1) + y1
