@@ -117,15 +117,14 @@ where
     ((x - x1) / (x2 - x1)) * (y2 - y1) + y1
 }
 
-pub fn fx_lin_multi<Tx, Ty>(x: Tx, points: &[(Tx, Ty)]) -> Ty
+pub fn fx_lin_multi<Tx, Ty, Tr>(x: Tx, points: &[(Tx, Ty)]) -> Ty
 where
-    Tx: Copy
-        + PartialOrd
-        + PartialEq
-        + Sub<Output = Tx>
-        + Mul<Ty, Output = Ty>
-        + Div<Output = Tx>,
+    // type of X axis input
+    Tx: Copy + PartialOrd + PartialEq + Sub<Output = Tx> + Div<Output = Tr>,
+    // type of Y axis output
     Ty: Copy + Add<Output = Ty> + Sub<Output = Ty>,
+    // ratio of X values, used to multiply Y values to scale them correctly
+    Tr: Mul<Ty, Output = Ty>,
 {
     assert!(points.len() >= 2);
 
@@ -133,21 +132,18 @@ where
     if x < points[0].0 {
         return fx_lin(x, points[0].0, points[0].1, points[1].0, points[1].1);
     }
-    for i in 0..points.len() - 1 {
-        let p1 = &points[i];
-        let p2 = &points[i + 1];
-
-        if x <= p2.0 {
-            return fx_lin(x, p1.0, p1.1, p2.0, p2.1);
+    let mut points_iter = points.windows(2);
+    while let Some(&[(p1x, p1y), (p2x, p2y)]) = points_iter.next() {
+        if x <= p2x {
+            return fx_lin(x, p1x, p1y, p2x, p2y);
         }
     }
-    #[allow(clippy::needless_return)]
     // x outside of range to the right
-    return fx_lin(
+    fx_lin(
         x,
         points[points.len() - 2].0,
         points[points.len() - 2].1,
         points[points.len() - 1].0,
         points[points.len() - 1].1,
-    );
+    )
 }
