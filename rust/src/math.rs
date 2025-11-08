@@ -65,26 +65,36 @@ where
 }
 
 /*
- * Implements a .linearstep() function for f32 and f64. This does the
- * same as GLSL's smoothstep() function, except the interpolation between
- * the two edge values is linear, instead of a Hermite interpolation.
+ * Implements a .linearstep() function for any type with the necessary traits.
+ * This does the same as GLSL's smoothstep() function, except the interpolation
+ * between the two edge values is linear, instead of a Hermite interpolation.
  */
-pub trait LinearStep {
-    fn linearstep(self, edge0: Self, edge1: Self) -> Self;
+pub trait LinearStep<R: From<f64> + PartialOrd> {
+    fn linearstep(self, edge0: Self, edge1: Self) -> R;
 }
 
-macro_rules! impl_linearstep {
-    ($t:ty) => {
-        impl LinearStep for $t {
-            fn linearstep(self, edge0: $t, edge1: $t) -> $t {
-                clamp((self - edge0) / (edge1 - edge0), 0.0 as $t, 1.0 as $t)
-            }
-        }
-    };
+impl<T, R> LinearStep<R> for T
+where
+    T: Copy + Sub<Output = T> + Div<Output = R>,
+    R: From<f64> + PartialOrd,
+{
+    fn linearstep(self, edge0: Self, edge1: Self) -> R {
+        clamp((self - edge0) / (edge1 - edge0), R::from(0.0), R::from(1.0))
+    }
 }
 
-impl_linearstep!(f32);
-impl_linearstep!(f64);
+// macro_rules! impl_linearstep {
+//     ($t:ty) => {
+//         impl LinearStep for $t {
+//             fn linearstep(self, edge0: $t, edge1: $t) -> $t {
+//                 clamp((self - edge0) / (edge1 - edge0), 0.0 as $t, 1.0 as $t)
+//             }
+//         }
+//     };
+// }
+
+// impl_linearstep!(f32);
+// impl_linearstep!(f64);
 
 pub fn clamp<T: PartialOrd>(x: T, minval: T, maxval: T) -> T {
     if x < minval {
