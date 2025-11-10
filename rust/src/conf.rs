@@ -276,7 +276,7 @@ impl Conf {
             );
         }
     }
-    pub fn iter(&self) -> ConfIterator {
+    pub fn iter(&self) -> ConfIterator<'_> {
         ConfIterator {
             conf: self,
             cookie: std::ptr::null(),
