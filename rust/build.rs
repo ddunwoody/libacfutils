@@ -7,6 +7,8 @@
  * Copyright 2023 Saso Kiselkov. All rights reserved.
  */
 
+#![allow(clippy::uninlined_format_args)]
+
 #[allow(dead_code)]
 fn add_test_config() {
     use build_target::*;
@@ -16,23 +18,30 @@ fn add_test_config() {
         Os::MacOs => ("mac64", "mac-64"),
         _ => unreachable!(),
     };
-    println!("cargo:rustc-link-search=native=../qmake/{plat_short}");
+    let root_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
+    println!("cargo:rustc-link-search=native={root_dir}/../qmake/{plat_short}");
     println!("cargo:rustc-link-lib=static=acfutils");
 
-    println!("cargo:rustc-link-search=native=../curl/libcurl-{plat_long}/lib");
+    println!(
+        "cargo:rustc-link-search=native={}/../curl/libcurl-{}/lib",
+        root_dir, plat_long,
+    );
     println!("cargo:rustc-link-lib=static=curl");
 
-    println!("cargo:rustc-link-search=native=../ssl/openssl-{plat_long}/lib");
+    println!(
+        "cargo:rustc-link-search=native={}/../ssl/openssl-{}/lib",
+        root_dir, plat_long,
+    );
     println!("cargo:rustc-link-lib=static=crypto");
     println!("cargo:rustc-link-lib=static=ssl");
 
-    println!("cargo:rustc-link-search=native=../zlib/zlib-{plat_long}/lib",);
+    println!(
+        "cargo:rustc-link-search=native={}/../zlib/zlib-{}/lib",
+        root_dir, plat_long,
+    );
     println!("cargo:rustc-link-lib=static=z");
 }
 
 fn main() {
-    // Uncomment to allow running "cargo test"
-    // This is needed because cargo currently doesn't support some
-    // kind of elegant #[cfg(test)] attribute inside of build.rs
-    //add_test_config();
+    add_test_config();
 }
