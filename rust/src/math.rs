@@ -75,10 +75,11 @@ pub trait LinearStep<R: From<f64> + PartialOrd> {
 
 impl<T, R> LinearStep<R> for T
 where
-    T: Copy + Sub<Output = T> + Div<Output = R>,
+    T: Copy + Sub<Output = T> + Div<Output = R> + PartialEq,
     R: From<f64> + PartialOrd,
 {
     fn linearstep(self, edge0: Self, edge1: Self) -> R {
+        assert!(edge0 != edge1);
         clamp((self - edge0) / (edge1 - edge0), R::from(0.0), R::from(1.0))
     }
 }
