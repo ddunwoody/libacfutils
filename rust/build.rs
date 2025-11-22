@@ -9,9 +9,10 @@
 
 #![allow(clippy::uninlined_format_args)]
 
+use build_target::{target_os, Os};
+
 #[allow(dead_code)]
 fn add_test_config() {
-    use build_target::*;
     let (plat_short, plat_long) = match target_os().unwrap() {
         Os::Windows => ("win64", "win-64"),
         Os::Linux => ("lin64", "linux-64"),

@@ -34,7 +34,7 @@ impl Conf {
     /// You must not call `conf_free()` on the returned conf_t, because
     /// it gets freed when this struct is dropped. Conversely, you must
     /// NOT hang onto it after this struct is dropped.
-    pub unsafe fn to_raw_conf_t(&self) -> *mut conf_t {
+    pub const unsafe fn to_raw_conf_t(&self) -> *mut conf_t {
         self.conf
     }
     pub fn from_file(
@@ -276,7 +276,7 @@ impl Conf {
             );
         }
     }
-    pub fn iter(&self) -> ConfIterator<'_> {
+    pub const fn iter(&self) -> ConfIterator<'_> {
         ConfIterator {
             conf: self,
             cookie: std::ptr::null(),
@@ -352,6 +352,7 @@ impl Iterator for ConfIterator<'_> {
 }
 
 #[repr(C)]
+#[allow(non_camel_case_types)]
 pub struct conf_t {
     _unused: [u8; 0],
 }
@@ -496,7 +497,7 @@ mod tests {
         assert_eq!(conf.get_f32("f32_key").unwrap(), 1.0);
         assert_eq!(conf.get_f64("f64_key").unwrap(), 1.0);
         assert_eq!(conf.get_f64_exact("f64_exact").unwrap(), 1.23456);
-        assert_eq!(conf.get_bool("bool_key").unwrap(), true);
+        assert!(conf.get_bool("bool_key").unwrap());
         assert_eq!(conf.get_data("data_key").unwrap(), data);
         assert_eq!(conf.get_str("test_remove"), None);
     }

@@ -128,7 +128,7 @@ impl<T: Clone + Send + 'static> Worker<T> {
             Some(_) => Err(WorkerAlreadyStartedError {}),
         }
     }
-    pub fn is_started(&self) -> bool {
+    pub const fn is_started(&self) -> bool {
         self.thread.is_some()
     }
     pub fn get_interval(&self) -> Duration {
@@ -209,7 +209,7 @@ mod tests {
                     );
                     break;
                 }
-                println!("Control: counter = {}", ctr);
+                println!("Control: counter = {ctr}");
             }
             std::thread::sleep(Duration::from_millis(100));
         }

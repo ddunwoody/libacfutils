@@ -45,7 +45,7 @@ where
         + Mul<f64, Output = T>
         + Div<f64, Output = T>,
 {
-    pub fn new(k_p: f64, k_i: f64, k_d: f64, r_d: Duration) -> Self {
+    pub const fn new(k_p: f64, k_i: f64, k_d: f64, r_d: Duration) -> Self {
         PidCtl {
             e_prev: None,
             v_prev: None,
@@ -98,7 +98,7 @@ where
             None
         }
     }
-    pub fn reset(&mut self) {
+    pub const fn reset(&mut self) {
         self.e_prev = None;
         self.v_prev = None;
         self.integ = None;

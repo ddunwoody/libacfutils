@@ -114,17 +114,17 @@ where
                 Self::recomp_delay(self.delay_base, self.delay_rand);
         }
     }
-    pub fn get_delay(&self) -> Duration {
+    pub const fn get_delay(&self) -> Duration {
         self.delay_base
     }
-    pub fn get_delay_cur(&self) -> Duration {
+    pub const fn get_delay_cur(&self) -> Duration {
         self.delay_cur
     }
     pub fn set_rand(&mut self, delay_rand: f64) {
         self.delay_rand = delay_rand;
         self.delay_cur = Self::recomp_delay(self.delay_base, self.delay_rand);
     }
-    pub fn get_rand(&self) -> f64 {
+    pub const fn get_rand(&self) -> f64 {
         self.delay_rand
     }
     pub fn get_time_since_change(&self) -> Duration {
@@ -264,7 +264,7 @@ mod tests {
 
         let serialized =
             serde_json::to_string(&dl).expect("Serialization failed");
-        println!("Serialized JSON: {}", serialized);
+        println!("Serialized JSON: {serialized}");
         let mut dl_deserd = serde_json::from_str::<DelayLine<i32>>(&serialized)
             .expect("Deserialization failed");
         // Wait for 500ms to make sure the delay line has

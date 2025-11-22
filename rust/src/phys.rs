@@ -321,7 +321,7 @@ pub mod units {
         dP: f64, /* Pascals, CAN be negative */
     }
     impl PressureRelative {
-        pub fn from_pressure(p: Pressure) -> Self {
+        pub const fn from_pressure(p: Pressure) -> Self {
             Self { dP: p.as_pa() }
         }
         pub fn from_pa(pa: f64) -> Self {
@@ -335,13 +335,13 @@ pub mod units {
         pub fn from_psi(psi: f64) -> Self {
             Self::from_pa(psi2pa(psi))
         }
-        pub fn as_pa(&self) -> f64 {
+        pub const fn as_pa(&self) -> f64 {
             self.dP
         }
         pub fn as_hpa(&self) -> f64 {
             self.dP / 100.0
         }
-        pub fn as_psi(&self) -> f64 {
+        pub const fn as_psi(&self) -> f64 {
             pa2psi(self.dP)
         }
         pub const fn new_const(pa: f64) -> Self {
