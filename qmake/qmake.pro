@@ -157,7 +157,7 @@ linux-g++-64 {
 	} else {
 		QMAKE_CFLAGS += $$system("../pkg-config-deps linux-64 --cflags")
 	}
-	QMAKE_CFLAGS += -Wno-misleading-indentation
+	QMAKE_CFLAGS += -Wno-misleading-indentation -Wno-nonnull-compare
 }
 
 macx {
