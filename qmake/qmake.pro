@@ -112,7 +112,7 @@ win32 {
 	DEFINES += M_2_PI=0.636619772367581343076
 	DEFINES += M_2_SQRTPI=1.12837916709551257390
 
-	QMAKE_CFLAGS += -Wno-misleading-indentation
+	QMAKE_CFLAGS += -Wno-misleading-indentation -Wno-nonnull-compare
 	QMAKE_DEL_FILE = rm -f
 	LIBS += -static-libgcc
 	contains(dll, 1) {
