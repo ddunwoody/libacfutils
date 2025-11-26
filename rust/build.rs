@@ -13,7 +13,8 @@ use build_target::{target_os, Os};
 
 #[allow(dead_code)]
 fn add_test_config() {
-    let (plat_short, plat_long) = match target_os().unwrap() {
+    let os = target_os().unwrap();
+    let (plat_short, plat_long) = match os {
         Os::Windows => ("win64", "win-64"),
         Os::Linux => ("lin64", "linux-64"),
         Os::MacOs => ("mac64", "mac-64"),
@@ -41,6 +42,13 @@ fn add_test_config() {
         root_dir, plat_long,
     );
     println!("cargo:rustc-link-lib=static=z");
+
+    if os == Os::Windows {
+        println!("cargo:rustc-link-lib=advapi32");
+        println!("cargo:rustc-link-lib=crypt32");
+        println!("cargo:rustc-link-lib=bcrypt");
+        println!("cargo:rustc-link-lib=psapi");
+    }
 }
 
 fn main() {
