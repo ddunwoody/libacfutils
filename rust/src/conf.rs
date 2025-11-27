@@ -108,6 +108,9 @@ impl Conf {
     pub fn merge(&self, conf_from: &Conf) {
         unsafe { conf_merge(conf_from.conf, self.conf) }
     }
+    pub fn merge_into_raw_conf_t(&self, conf_to: &mut conf_t) {
+        unsafe { conf_merge(self.conf, conf_to) }
+    }
     pub fn get_str(&self, key: &str) -> Option<&str> {
         unsafe {
             let c_key =
