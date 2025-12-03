@@ -84,19 +84,6 @@ where
     }
 }
 
-// macro_rules! impl_linearstep {
-//     ($t:ty) => {
-//         impl LinearStep for $t {
-//             fn linearstep(self, edge0: $t, edge1: $t) -> $t {
-//                 clamp((self - edge0) / (edge1 - edge0), 0.0 as $t, 1.0 as $t)
-//             }
-//         }
-//     };
-// }
-
-// impl_linearstep!(f32);
-// impl_linearstep!(f64);
-
 pub fn clamp<T: PartialOrd>(x: T, minval: T, maxval: T) -> T {
     if x < minval {
         minval
