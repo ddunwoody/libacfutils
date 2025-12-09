@@ -482,7 +482,6 @@ pub mod units {
     impl Angvel {
         pub const fn from_radsec(radsec: f64) -> Self {
             assert!(radsec.is_finite());
-            assert!(radsec.abs() < 1e12);
             Self { r: radsec }
         }
         pub const fn from_degsec(degsec: f64) -> Self {
@@ -492,7 +491,6 @@ pub mod units {
         }
         pub const fn from_rps(rps: f64) -> Self {
             assert!(rps.is_finite());
-            assert!(rps.abs() < 1e12);
             Self {
                 r: rps * 2.0 * std::f64::consts::PI,
             }
@@ -537,7 +535,6 @@ pub mod units {
     impl Speed {
         pub const fn from_mps(mps: f64) -> Self {
             assert!(mps.is_finite());
-            assert!(mps.abs() < 1e6);
             Self { s: mps }
         }
         pub const fn from_kph(kph: f64) -> Self {
@@ -592,17 +589,14 @@ pub mod units {
     impl MassRate {
         pub const fn from_kgs(kgs: f64) -> Self {
             assert!(kgs.is_finite());
-            assert!(kgs.abs() < 1e12);
             Self { mr: kgs }
         }
         pub const fn from_kgh(kgh: f64) -> Self {
             assert!(kgh.is_finite());
-            assert!(kgh.abs() < 1e9);
             Self { mr: kgh / 3600.0 }
         }
         pub const fn from_pph(pph: f64) -> Self {
             assert!(pph.is_finite());
-            assert!(pph.abs() < 1e9);
             Self {
                 mr: lbs2kg(pph) / 3600.0,
             }
@@ -641,22 +635,18 @@ pub mod units {
     impl VolumeRate {
         pub const fn from_m3_per_sec(m3ps: f64) -> Self {
             assert!(m3ps.is_finite());
-            assert!(m3ps.abs() < 1e12);
             Self { vr: m3ps }
         }
         pub const fn from_lit_per_sec(lps: f64) -> Self {
             assert!(lps.is_finite());
-            assert!(lps.abs() < 1e12);
             Self { vr: lps / 1000.0 }
         }
         pub const fn from_lit_per_min(lpm: f64) -> Self {
             assert!(lpm.is_finite());
-            assert!(lpm.abs() < 1e12);
             Self { vr: lpm / 60000.0 }
         }
         pub const fn from_lit_per_hour(lph: f64) -> Self {
             assert!(lph.is_finite());
-            assert!(lph.abs() < 1e12);
             let lps = lph / 3600000.0;
             Self { vr: lps }
         }
@@ -1003,12 +993,10 @@ pub mod conv {
      */
     pub const fn lbs2kg(lbs: f64) -> f64 {
         assert!(lbs.is_finite());
-        assert!(lbs.abs() < 1e12);
         lbs * 0.45359237
     }
     pub const fn kg2lbs(kg: f64) -> f64 {
         assert!(kg.is_finite());
-        assert!(kg.abs() < 1e12);
         kg / 0.45359237
     }
     /*
@@ -1017,13 +1005,11 @@ pub mod conv {
     /* Watts to horsepower */
     pub const fn watt2hp(w: f64) -> f64 {
         assert!(w.is_finite());
-        assert!(w.abs() < 1e12);
         w * 0.001341022
     }
     /* horsepower to Watts */
     pub const fn hp2watt(hp: f64) -> f64 {
         assert!(hp.is_finite());
-        assert!(hp.abs() < 1e12);
         hp / 0.001341022
     }
     /*
