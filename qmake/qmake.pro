@@ -337,7 +337,6 @@ contains(minimal, 1) {
 	    ../src/glew_os.c \
 	    ../src/glutils.c \
 	    ../src/lacf_gl_pic.c \
-	    ../src/minimp3.c \
 	    ../src/odb.c \
 	    ../src/paste.c \
 	    ../src/riff.c \
