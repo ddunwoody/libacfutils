@@ -1,13 +1,49 @@
 #!/bin/bash
 
-if [[ "$(lsb_release -a 2> /dev/null | awk '/Distributor ID:/{print $3}')" \
-    != "Ubuntu" ]]; then
-	echo "This machine doesn't appear to be running Ubuntu." >&2
-	exit 1
-fi
+SUDO=sudo
 
-UBUNTU_RELEASE="$(lsb_release -a 2> /dev/null | awk '/Release:/{print $2}')"
-UBUNTU_MAJOR="$(echo "$UBUNTU_RELEASE" | cut -d . -f 1)"
+while getopts "shy" opt; do
+	case $opt in
+	    s)
+		SUDO=""
+		;;
+	    y)
+		DONTPROMPT="-y"
+		;;
+	    h)
+		cat << EOF
+$0 [-sy]
+Options:
+    -s : don't try running sudo. Useful in CI builds when you don't need sudo
+         invocations.
+    -y : don't prompt for install confirmation.
+EOF
+		exit
+		;;
+	esac
+done
+
+DIST_ID="$(lsb_release -a 2> /dev/null | awk '/Distributor ID:/{print $3}')"
+
+case "$DIST_ID" in
+    Ubuntu)
+	UBUNTU_RELEASE="$(lsb_release -a 2> /dev/null | awk '/Release:/{print $2}')"
+	UBUNTU_MAJOR="$(echo "$UBUNTU_RELEASE" | cut -d . -f 1)"
+	;;
+    Debian|Linuxmint)
+	# Assume latest Ubuntu LTS
+	UBUNTU_MAJOR=24
+	;;
+    *)
+	# Fallback - check if apt is available at all
+	if ! which apt &> /dev/null; then
+		echo "This machine doesn't appear to be running Ubuntu or any apt-compatible distro." >&2
+		exit 1
+	fi
+	# Assume latest Ubuntu LTS
+	UBUNTU_MAJOR=24
+	;;
+esac
 
 PACKAGES="build-essential cmake pkg-config automake autoconf libtool unzip"
 
@@ -22,6 +58,7 @@ elif [ "$UBUNTU_MAJOR" -lt 21 ]; then
 else
 	PACKAGES="$PACKAGES qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools"
 fi
+
 
 MINIMAL=0
 while getopts "m" o; do
@@ -42,4 +79,4 @@ if [ "$MINIMAL" -eq 0 ]; then
 	    mingw-w64-x86-64-dev gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64"
 fi
 
-sudo apt-get install $PACKAGES
+$SUDO apt-get install $DONTPROMPT $PACKAGES

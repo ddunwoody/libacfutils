@@ -1,0 +1,33 @@
+name: Build
+on:
+  push:
+
+jobs:
+  build_ubuntu_22_04:
+    name: Ubuntu 22.04 LTS build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Initialize submodule(s)
+        run: git submodule update --init --recursive --merge
+      - name: Install build tools
+        run: apt update && ./install-ubuntu-packages -sy
+      - name: Build dependencies
+        run: ./build_deps
+      - name: Build libacfutils
+        run: cd qmake && ./build-win-lin
+  build_ubuntu_latest:
+    name: Ubuntu latest LTS build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Initialize submodule(s)
+        run: git submodule update --init --recursive --merge
+      - name: Install build tools
+        run: apt update && ./install-ubuntu-packages -sy
+      - name: Build dependencies
+        run: ./build_deps
+      - name: Build libacfutils
+        run: cd qmake && ./build-win-lin
