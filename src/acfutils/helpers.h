@@ -480,7 +480,7 @@ API_EXPORT ssize_t filesz(const char *filename);
 #if	IBM || LIN
 #define	strlcpy				lacf_strlcpy
 #endif
-API_EXPORT void lacf_strlcpy(char *restrict dest, const char *restrict src,
+API_EXPORT size_t lacf_strlcpy(char *restrict dest, const char *restrict src,
     size_t cap);
 
 /**
