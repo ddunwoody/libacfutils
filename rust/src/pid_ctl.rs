@@ -43,7 +43,11 @@ where
         + Add<Output = T>
         + Sub<Output = T>
         + Mul<f64, Output = T>
-        + Div<f64, Output = T>,
+        + Mul<f32, Output = T>
+        + Div<f64, Output = T>
+        + From<f32>
+        + Mul<Output = T>
+        + crate::math::FilterIn<T>,
 {
     pub const fn new(k_p: f64, k_i: f64, k_d: f64, r_d: Duration) -> Self {
         PidCtl {
@@ -71,7 +75,6 @@ where
         }
     }
     fn update_with_values(&mut self, e: T, v: T, d_t: Duration) {
-        use crate::math::FilterIn;
         let integ = self.integ.unwrap_or_default();
         self.integ = Some(integ + e * d_t.as_secs_f64());
         if let Some(v_prev) = self.v_prev {

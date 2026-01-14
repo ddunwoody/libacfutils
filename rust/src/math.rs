@@ -30,7 +30,7 @@ impl_round_to!(f64);
 
 pub trait FilterIn<T>
 where
-    T: Add<Output = T> + Mul<f64, Output = T>,
+    T: Add<Output = T> + Mul<Output = T> + Sub<Output = T> + From<f32> + Copy,
 {
     /**
      * Provides a gradual method of integrating an old value until it
@@ -46,14 +46,15 @@ where
 
 impl<T> FilterIn<T> for T
 where
-    T: Add<Output = T> + Mul<f64, Output = T>,
+    T: Add<Output = T> + Mul<Output = T> + Sub<Output = T> + From<f32> + Copy,
 {
     fn filter_in(self, new_val: T, d_t: Duration, lag: Duration) -> T {
         assert!(d_t.as_secs_f64() >= 0.0);
         assert!(lag.as_secs_f64() >= 0.0);
 
-        let alpha = 1.0 / (1.0 + d_t.as_secs_f64() / lag.as_secs_f64());
-        self * alpha + new_val * (1.0 - alpha)
+        let frac = 1.0 / (1.0 + d_t.as_secs_f32() / lag.as_secs_f32());
+        let alpha = T::from(frac);
+        self * alpha + new_val * (T::from(1.0) - alpha)
     }
 }
 
