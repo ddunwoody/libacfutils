@@ -84,12 +84,6 @@ extern "C" {
 #define	WARN_UNUSED_RES_ATTR	__attribute__((warn_unused_result))
 #define	DEPRECATED_ATTR		__attribute__((deprecated))
 
-#if	IBM && defined(__GNUC__) && __GNUC__ < 11
-#define	PACKED_ATTR		__attribute__((__packed__, gcc_struct))
-#else
-#define	PACKED_ATTR		__attribute__((__packed__))
-#endif
-
 #else	// !defined(__GNUC__) && !defined(__clang__)
 
 #define	UNUSED_ATTR
@@ -102,6 +96,19 @@ extern "C" {
 #ifndef	UNUSED
 #define	UNUSED(x)	(void)(x)
 #endif
+
+#if	defined(__GNUC__) || defined(__clang__)
+#if	IBM && defined(__GNUC__) && __GNUC__ < 11
+#define	PACKED_ATTR		__attribute__((__packed__, gcc_struct))
+#else
+#define	PACKED_ATTR		__attribute__((__packed__))
+#endif
+
+#else	// !defined(__GNUC__) && !defined(__clang__)
+
+#define	PACKED_ATTR
+
+#endif	// !defined(__GNUC__) && !defined(__clang__)
 
 #define	LACF_UNUSED(x)	(void)(x)
 
