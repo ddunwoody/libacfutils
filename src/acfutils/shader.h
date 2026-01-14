@@ -158,7 +158,7 @@ enum {
 
 /* MSVC doesn't speak C99 */
 #if	defined(__GNUC__) || defined(__clang__)
-static shader_attr_bind_t UNUSED_ATTR default_vtx_attr_binds[] = {
+UNUSED_ATTR static shader_attr_bind_t default_vtx_attr_binds[] = {
 	{ .name = "vtx_pos", .idx = VTX_ATTRIB_POS },
 	{ .name = "vtx_norm", .idx = VTX_ATTRIB_NORM },
 	{ .name = "vtx_tex0", .idx = VTX_ATTRIB_TEX0 },
