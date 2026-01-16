@@ -13,7 +13,7 @@
  * CDDL HEADER END
 */
 /*
- * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright 2026 Saso Kiselkov. All rights reserved.
  */
 
 #include <string.h>
@@ -43,23 +43,23 @@ paste_fini(void)
 {
 }
 
-bool_t
+size_t
 paste_get_str(char *str, size_t cap)
 {
 	HANDLE h;
 
 	ASSERT(str != NULL);
 	if (!OpenClipboard(NULL))
-		return (B_FALSE);
+		return (0);
 	h = GetClipboardData(CF_TEXT);
 	if (h == NULL) {
 		CloseClipboard();
-		return (B_FALSE);
+		return (0);
 	}
-	lacf_strlcpy(str, h, cap);
+	size_t l = lacf_strlcpy(str, h, cap);
 	CloseClipboard();
 
-	return (B_TRUE);
+	return (l);
 }
 
 bool_t
@@ -109,19 +109,17 @@ paste_fini(void)
 	}
 }
 
-bool_t
+size_t
 paste_get_str(char *str, size_t cap)
 {
 	const char *text;
 
 	if (cb == NULL)
-		return (B_FALSE);
+		return (0);
 	text = clipboard_text(cb);
 	if (text == NULL)
-		return (B_FALSE);
-	lacf_strlcpy(str, text, cap);
-
-	return (B_TRUE);
+		return (0);
+	return (lacf_strlcpy(str, text, cap));
 }
 
 bool_t

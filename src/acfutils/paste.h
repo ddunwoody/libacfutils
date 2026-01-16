@@ -13,7 +13,7 @@
  * CDDL HEADER END
 */
 /*
- * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright 2026 Saso Kiselkov. All rights reserved.
  */
 
 #ifndef	_ACF_UTILS_PASTE_H_
@@ -27,7 +27,7 @@ extern "C" {
 
 API_EXPORT bool_t paste_init(void);
 API_EXPORT void paste_fini(void);
-API_EXPORT bool_t paste_get_str(char *str, size_t cap);
+API_EXPORT size_t paste_get_str(char *str, size_t cap);
 API_EXPORT bool_t paste_set_str(const char *str);
 
 #ifdef	__cplusplus
