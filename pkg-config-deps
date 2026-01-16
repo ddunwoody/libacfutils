@@ -189,9 +189,16 @@ $(pwd)/libclipboard/libclipboard-$ARCH/install/lib/pkgconfig"
 	if [ -z "$NO_LIBCLIPBOARD" ]; then
 		PACKAGES="$PACKAGES libclipboard"
 	fi
+elif [[ "$ARCH" = "mac-64" ]]; then
+	PKG_CONFIG_PATH="$PKG_CONFIG_PATH:\
+$(pwd)/glew/glew-1.13.0-$ARCH/install/lib/pkgconfig:\
+$(pwd)/libclipboard/libclipboard-$ARCH/install/lib/pkgconfig"
+	if [ -z "$NO_LIBCLIPBOARD" ]; then
+		PACKAGES="$PACKAGES libclipboard"
+	fi
 else
 	PKG_CONFIG_PATH="$PKG_CONFIG_PATH:\
-$(pwd)/glew/glew-1.13.0-$ARCH/install/lib/pkgconfig"
+$(pwd)/glew/glew-1.13.0-$ARCH/install/lib/pkgconfig:"
 fi
 
 export PKG_CONFIG_PATH

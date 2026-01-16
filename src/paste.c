@@ -25,10 +25,10 @@
 
 #if	IBM
 #include <windows.h>
-#elif	LIN
+#elif	APL || LIN
 #include <libclipboard.h>
 static clipboard_c *cb = NULL;
-#endif
+#endif	// APL || LIN
 
 #if	IBM
 
@@ -90,60 +90,7 @@ paste_set_str(const char *str)
 	return (B_TRUE);
 }
 
-#elif	APL
-
-bool_t
-paste_init(void)
-{
-	return (B_TRUE);
-}
-
-void
-paste_fini(void)
-{
-}
-
-bool_t
-paste_get_str(char *str, size_t cap)
-{
-	FILE	*fp = popen("pbpaste", "r");
-	size_t	n = 0;
-
-	if (fp == NULL)
-		return (B_FALSE);
-	while (n + 1 < cap) {
-		size_t b = fread(&str[n], 1, cap - 1, fp);
-
-		if (b == 0)
-			break;
-		n += b;
-	}
-	str[n] = '\0';
-	fclose(fp);
-
-	return (B_TRUE);
-}
-
-bool_t
-paste_set_str(const char *str)
-{
-	FILE	*fp = popen("pbcopy", "w");
-
-	if (fp == NULL)
-		return (B_FALSE);
-	for (size_t n = 0, cap = strlen(str); n < cap;) {
-		size_t b = fwrite(&str[n], 1, cap - n, fp);
-
-		if (b == 0)
-			break;
-		n += b;
-	}
-	fclose(fp);
-
-	return (B_TRUE);
-}
-
-#else	/* LIN */
+#elif	APL || LIN
 
 bool_t
 paste_init(void)
@@ -187,4 +134,4 @@ paste_set_str(const char *str)
 	return (B_TRUE);
 }
 
-#endif	/* LIN */
+#endif	/* APL || LIN */

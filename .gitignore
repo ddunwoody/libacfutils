@@ -123,6 +123,7 @@ glew/glew-1.13.0-mac-arm
 cairo/cairo-1.16.0
 cairo/pixman-0.36.0
 
+libclipboard/libclipboard-mac-64
 libclipboard/libclipboard-linux-64
 
 ucpp/libucpp.a

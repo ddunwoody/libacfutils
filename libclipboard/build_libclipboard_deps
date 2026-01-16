@@ -15,14 +15,19 @@
 
 # Copyright 2024 Saso Kiselkov. All rights reserved.
 
-LIBCLIPBOARD="libclipboard-linux-64"
+if [[ $(uname) = "Linux" ]]; then
+	LIBCLIPBOARD="libclipboard-linux-64"
+	GNU_SED="sed"
+else
+	LIBCLIPBOARD="libclipboard-mac-64"
+	ARCH_FLAGS="-DCMAKE_OSX_ARCHITECTURES='arm64;x86_64' \
+	    -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0"
+	GNU_SED="gsed"
+fi
 LIBCLIPBOARD_ARCHIVE="libclipboard-1.0.tar.bz2"
 
 set -e
 
-if [[ $(uname) != Linux ]]; then
-	exit
-fi
 if [[ "$do_clean" == "1" ]]; then
 	rm -rf "$LIBCLIPBOARD"
 	exit
@@ -34,9 +39,12 @@ if ! [ -f "$LIBCLIPBOARD/install/lib/libclipboard.a" ]; then
 	mv "libclipboard-1.0" "$LIBCLIPBOARD"
 	cd "$LIBCLIPBOARD"
 	cmake -DCMAKE_C_FLAGS="-fPIC" \
-	    -DCMAKE_INSTALL_PREFIX:PATH="$(pwd)/install" .
+	    -DCMAKE_INSTALL_PREFIX:PATH="$(pwd)/install" \
+	    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+	    $ARCH_FLAGS \
+	    .
 	make -j4
 	make install
-	sed -i 's|libdir=${exec_prefix}/|libdir=${exec_prefix}/lib|g' \
+	"$GNU_SED" -i 's|libdir=${exec_prefix}/|libdir=${exec_prefix}/lib|g' \
 	    "install/lib/pkgconfig/libclipboard.pc"
 fi
