@@ -18,8 +18,6 @@ TEMPLATE = lib
 QT -= gui core
 CONFIG += staticlib
 
-QMAKE_APPLE_DEVICE_ARCHS = x86_64 arm64
-
 CONFIG += warn_on plugin debug
 CONFIG -= thread exceptions qt rtti release
 
